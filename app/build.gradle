@@ -52,8 +52,8 @@ dependencies {
     implementation "com.gorisse.thomas.sceneform:sceneform:1.19.3"
     implementation 'com.google.ar:core:1.25.0'
     // MLKit
-    implementation 'com.google.mlkit:object-detection:16.2.3'
-    implementation 'com.google.mlkit:object-detection-custom:16.3.1'
+    implementation 'com.google.mlkit:object-detection:16.2.5'
+    implementation 'com.google.mlkit:object-detection-custom:16.3.2'
     // coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
 }

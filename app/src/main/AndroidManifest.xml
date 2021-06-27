@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARFaceRecognition">
         <meta-data android:name="com.google.ar.core" android:value="optional" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

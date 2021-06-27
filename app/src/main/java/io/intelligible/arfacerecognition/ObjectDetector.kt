@@ -1,15 +1,12 @@
 package io.intelligible.arfacerecognition
 
 import android.graphics.Bitmap
+import android.media.Image
 import android.util.Log
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.custom.CustomObjectDetectorOptions
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
-import com.google.mlkit.vision.objects.defaults.PredefinedCategory
-import kotlinx.coroutines.runBlocking
 
 class ObjectDetector(private val image: Bitmap, private val idAnalyxer: IdAnalyzer) {
     private val localModel by lazy {
@@ -29,14 +26,19 @@ class ObjectDetector(private val image: Bitmap, private val idAnalyxer: IdAnalyz
 
     // [END create_custom_options]
     private val objectDetector by lazy { ObjectDetection.getClient(options) }
+    private var count  = 0
 
     fun useCustomObjectDetector() {
-        runBlocking {
+        if (!Constants.detected){
+            count++
+            Log.e("detector", "$count")
             objectDetector.process(InputImage.fromBitmap(image, 0))
                 .addOnSuccessListener { results ->
 
                     if (results.isEmpty().not()) {
                         idAnalyxer(results[0])
+                       if ( results[0].trackingId == 1) Constants.detected = true
+
                     }
                 }
                 .addOnFailureListener { e ->
@@ -45,6 +47,8 @@ class ObjectDetector(private val image: Bitmap, private val idAnalyxer: IdAnalyz
 
                 }
         }
+
+
 
     }
     // [END process_image]
