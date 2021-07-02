@@ -3,6 +3,7 @@ package io.intelligible.arfacerecognition
 class Constants {
 
     companion object{
-        var detected = false
+
+        var iscRunning= false
     }
 }

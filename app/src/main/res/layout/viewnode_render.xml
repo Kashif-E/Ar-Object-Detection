@@ -1,70 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="#66DB4437">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        app:cardCornerRadius="5dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#66DB4437">
+
+        <TextView
+            android:layout_margin="5dp"
+            android:id="@+id/label"
+            android:text="label"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <!-- <androidx.constraintlayout.widget.ConstraintLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="408dp"
-            android:layout_height="280dp"
-            android:scaleType="matrix"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/kate" />
+             <ImageView
+                 android:id="@+id/imageView3"
+                 android:layout_width="408dp"
+                 android:layout_height="280dp"
+                 android:scaleType="matrix"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintHorizontal_bias="0.0"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:srcCompat="@drawable/kate" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3">
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+                 app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                 app:layout_constraintStart_toStartOf="@+id/imageView3"
+                 app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/muli_bold"
-                android:text="Kate Downtown"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                 <TextView
+                     android:id="@+id/textView5"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_marginTop="10dp"
+                     android:layout_marginBottom="10dp"
+                     android:fontFamily="@font/muli_bold"
+                     android:text="Kate Downtown"
+                     android:textColor="@color/white"
+                     android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/muli_bold"
-                android:text="Snior Node.Js Developer"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/muli_bold"
-                android:text="Likes to Contribute on Open Source Projects"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_marginBottom="10dp"
+                     android:fontFamily="@font/muli_bold"
+                     android:text="Snior Node.Js Developer"
+                     android:textColor="@color/white"
+                     android:textSize="18sp" />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_marginBottom="10dp"
+                     android:fontFamily="@font/muli_bold"
+                     android:text="Likes to Contribute on Open Source Projects"
+                     android:textColor="@color/white"
+                     android:textSize="18sp" />
+             </LinearLayout>
+         </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>
 

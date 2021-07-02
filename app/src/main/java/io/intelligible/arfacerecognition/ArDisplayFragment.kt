@@ -10,6 +10,7 @@ import android.view.PixelCopy
 import android.view.SurfaceView
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.filament.ColorGrading
 import com.google.ar.core.Frame
@@ -24,6 +25,7 @@ import com.google.ar.sceneform.ux.ArFragment.OnViewCreatedListener
 import com.google.ar.sceneform.ux.TransformableNode
 import com.google.mlkit.vision.objects.DetectedObject
 import io.intelligible.arfacerecognition.databinding.ArFragmentBinding
+import io.intelligible.arfacerecognition.databinding.ViewnodeRenderBinding
 import kotlinx.coroutines.runBlocking
 
 
@@ -32,6 +34,7 @@ typealias IdAnalyzer = (detectedObject: DetectedObject) -> Unit
 class ArDisplayFragment : Fragment(R.layout.ar_fragment),
     OnViewCreatedListener, Scene.OnUpdateListener {
 
+    var count = 0;
     private lateinit var anchorNode: AnchorNode
     private val TAG = "arfragment"
     private val faceInfo = Node()
@@ -49,13 +52,13 @@ class ArDisplayFragment : Fragment(R.layout.ar_fragment),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = ArFragmentBinding.bind(view)
         arFragment = childFragmentManager.findFragmentById(R.id.ux_fragment) as ArFragment
-        if (!IsInitialised){
+        if (!IsInitialised) {
             callbackThread.start()
             callbackHandler = Handler(callbackThread.looper)
             IsInitialised = true
         }
 
-        loadModels()
+
         binding.textView2.setOnClickListener {
             arFragment!!.arSceneView.scene.addOnUpdateListener(this)
             binding.trackingState.visibility = View.VISIBLE
@@ -79,24 +82,6 @@ class ArDisplayFragment : Fragment(R.layout.ar_fragment),
         }
     }
 
-
-    private fun loadModels() {
-
-        ViewRenderable.builder()
-            .setView(requireContext(), R.layout.viewnode_render)
-            .build()
-            .thenAccept { view: ViewRenderable ->
-                viewRenderable = view
-                viewRenderable!!.isShadowCaster = false
-                viewRenderable!!.isShadowReceiver = false
-                faceInfo.renderable = viewRenderable
-                Toast.makeText(requireContext(), "Model Loaded", Toast.LENGTH_SHORT).show()
-            }
-            .exceptionally {
-                Toast.makeText(requireContext(), "Unable to load model", Toast.LENGTH_LONG).show()
-                null
-            }
-    }
 
     override fun onUpdate(frameTime: FrameTime?) {
 
@@ -128,9 +113,10 @@ class ArDisplayFragment : Fragment(R.layout.ar_fragment),
 
 
     private fun onUpdateFrame(frameTime: FrameTime?) {
-    arFragment!!.arSceneView.arFrame ?: return
+        arFragment!!.arSceneView.arFrame ?: return
+
         copyPixelFromView(arFragment!!.arSceneView) { bitmap ->
-            Log.i(TAG, "Inside copy pixel")
+
             val targetBitmap = Bitmap.createBitmap(bitmap)
 
 
@@ -142,39 +128,13 @@ class ArDisplayFragment : Fragment(R.layout.ar_fragment),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.e("tracking", it.trackingId.toString())
-                if (it.trackingId == 0) {
-                   Log.e("detected", "1")
-                    arFragment!!.arSceneView.scene.removeOnUpdateListener(this)
-                    addDrawable(viewRenderable!!)
-                    /*   val pos = floatArrayOf(0f, 0f, -1f)
-                       val rotation = floatArrayOf(0f, 0f, 0f, 0f)
-                       val coords = it.boundingBox.exactCenterX()
-                           .toInt() to it.boundingBox.exactCenterY().toInt()
-                       val (atX, atY) = coords
+
+                arFragment!!.arSceneView.scene.removeOnUpdateListener(this)
+
+                    loadModels(it.labels[0].text)
 
 
-                       val anchor = arFragment!!.arSceneView.session!!.createAnchor(
-                           Pose(
-                               pos,
-                               rotation
-                           )
-                       )
-                       anchorNode = AnchorNode(anchor).apply {
-                           localPosition.x = atX.toFloat()
-                           localPosition.y = atY.toFloat()
-                       }
-                       faceInfo.setParent(anchorNode)
-                       faceInfo.localPosition = Vector3(0.0f, 0.0f, 0.0f)
-                       anchorNode.setParent(arFragment!!.arSceneView.scene)
-                       detected = true*/
 
-                    Toast.makeText(requireContext(), "kate", Toast.LENGTH_SHORT).show()
-                } else if (it.trackingId == 2) {
-
-                    detected = true
-                    Toast.makeText(requireContext(), "Kashif", Toast.LENGTH_SHORT)
-                        .show()
-                }
             }
             dd.useCustomObjectDetector()
 
@@ -201,19 +161,42 @@ class ArDisplayFragment : Fragment(R.layout.ar_fragment),
         }, callbackHandler)
     }
 
+    private fun loadModels(text: String) {
 
-    private fun addDrawable(viewRenderable: ViewRenderable) {
+        val root = ViewnodeRenderBinding.inflate(layoutInflater)
+        root.label.text = text
+        ViewRenderable.builder()
+            .setView(requireContext(), root.root)
+            .build()
+            .thenAccept { view: ViewRenderable ->
+                viewRenderable = view
+                viewRenderable!!.isShadowCaster = false
+                viewRenderable!!.isShadowReceiver = false
+                faceInfo.renderable = viewRenderable
+                Toast.makeText(requireContext(), "Model Loaded", Toast.LENGTH_SHORT).show()
+                addDrawable()
+            }
+            .exceptionally {
+                Toast.makeText(requireContext(), "Unable to load model", Toast.LENGTH_LONG).show()
+                null
+            }
+    }
+
+    private fun addDrawable() {
+
         val frame = arFragment!!.arSceneView.arFrame!!
-        val hitTest = frame.hitTest(frame.screenCenter().x,
-            frame.screenCenter().y)
+        val hitTest = frame.hitTest(
+            frame.screenCenter().x,
+            frame.screenCenter().y
+        )
 
         val hitResult = hitTest[0]
-   /*     Log.i(
-            TAG, "${hitResult.distance}, " +
-                    "${hitResult.hitPose.xAxis.asList()}, " +
-                    "${hitResult.hitPose.yAxis.asList()}, " +
-                    "${hitResult.hitPose.zAxis.asList()}"
-        )*/
+        /*     Log.i(
+                 TAG, "${hitResult.distance}, " +
+                         "${hitResult.hitPose.xAxis.asList()}, " +
+                         "${hitResult.hitPose.yAxis.asList()}, " +
+                         "${hitResult.hitPose.zAxis.asList()}"
+             )*/
 
         //Create an anchor at the plane hit
         val modelAnchor = arFragment!!
